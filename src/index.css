@@ -3,9 +3,22 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
 body {
+  margin: 0;
+  height: 100%;
   font-family: "Space Grotesk", sans-serif;
   font-size: 16px;
+  color: #21092f;
+}
+
+body {
+  min-width: 340px;
+  width: auto !important;
+}
+
+#root {
+  height: 100%;
 }
 
 label {
