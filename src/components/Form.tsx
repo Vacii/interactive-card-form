@@ -1,32 +1,46 @@
-interface FormProps {
-  setCardName: (name: string) => void;
+interface FormData {
+  cardHolderName: string;
+  cardNumber: string;
+  cardExpMM: string;
+  cardExpYY: string;
+  cvc: string;
 }
 
-const Form: React.FC<FormProps> = ({ setCardName }) => {
-  const handleSubmit = (e: any) => {
-    console.log(e);
-  };
+interface FormProps {
+  setFormData: (data: FormData) => void;
+  formData: FormData;
+}
 
+function Form({ setFormData, formData }: FormProps) {
   const handleInput = (e: any) => {
-    const newName = e.target.value;
+    const { name, value } = e.target;
+    if (name === "card-number")
+      e.target.value = value
+        .replace(/\s/g, "")
+        .replace(/(.{4})/g, "$1 ")
+        .trim()
+        .slice(0, 19);
+    console.log(e.target.value);
 
-    if (newName != "") {
-      setCardName(e.target.value);
-    } else {
-      setCardName("Jane Appleseed");
-    }
+    // if (name === 'number') e.target.value = value.replace(/\s/g, '').replace(/(.{4})/g, '$1 ').trim().slice(0, 19)
+    // if (name === 'mm' || name === 'yy') e.target.value = value.toString().replace(/[^0-9]/g, '').substring(0, 2)
+    // if (name === 'mm' && value > 12) e.target.value = '12'
+    // if (name === 'cvc') e.target.value = value.substring(0, 4)
+
+    setFormData({ ...formData, [name]: e.target.value });
   };
+
   return (
     <>
       <div className="mt-16 h-full">
-        <form onSubmit={handleSubmit} className="h-full">
+        <form className="h-full">
           <div className="flex flex-col justify-center w-full h-full px-5 gap-5">
             <label className="uppercase flex flex-col tracking-widest text-sm">
               Cardholder name
               <input
                 type="text"
-                placeholder="e.g. Jane Appleseed"
                 onChange={handleInput}
+                placeholder="e.g. Jane Appleseed"
                 name="carholder-name"
                 className="outline outline-1 outline-gray-400 opacity-50 p-2 mt-2 rounded-lg"
               />
@@ -35,8 +49,8 @@ const Form: React.FC<FormProps> = ({ setCardName }) => {
               Card number
               <input
                 type="text"
-                placeholder="e.g. 1234 5678 9123 000"
                 onChange={handleInput}
+                placeholder="e.g. 1234 5678 9123 000"
                 name="card-number"
                 className="outline outline-1 outline-gray-400 opacity-50 p-2 mt-2 rounded-lg"
               ></input>
@@ -51,14 +65,12 @@ const Form: React.FC<FormProps> = ({ setCardName }) => {
                   <input
                     type="text"
                     placeholder="MM"
-                    onChange={handleInput}
                     name="card-exp-mm"
                     className="min-w-0 outline outline-1 outline-gray-400 opacity-50 p-2 rounded-lg"
                   />
                   <input
                     type="text"
                     placeholder="YY"
-                    onChange={handleInput}
                     name="card-exp-yy"
                     className="min-w-0 outline outline-1 outline-gray-400 opacity-50 p-2 rounded-lg"
                   />
@@ -71,7 +83,6 @@ const Form: React.FC<FormProps> = ({ setCardName }) => {
                 <input
                   type="text"
                   placeholder="e.g. 123"
-                  onChange={handleInput}
                   name="card-exp-mm"
                   className="min-w-0 w-full outline outline-1 outline-gray-400 opacity-50 p-2 mt-2 rounded-lg"
                 />
@@ -85,6 +96,6 @@ const Form: React.FC<FormProps> = ({ setCardName }) => {
       </div>
     </>
   );
-};
+}
 
 export default Form;
