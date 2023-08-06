@@ -12,8 +12,17 @@ function App() {
 
   return (
     <>
-      <div className="h-full flex flex-col justify-start">
-        <img src="src/assets/bg-main-mobile.png" alt="fade-background" />
+      <div className="h-full flex flex-col md:flex-row justify-start">
+        <img
+          src="src/assets/bg-main-mobile.png"
+          alt="fade-background"
+          className="sm:hidden"
+        />
+        <img
+          src="src/assets/bg-main-desktop.png"
+          alt=""
+          className="hidden sm:block w-2/5"
+        />
         <div className="absolute right-4 top-10 bg-card-back bg-cover h-[10rem] w-[18rem] rounded-md">
           <p className="absolute text-white text-xs tracking-widest w-10 text-center right-7 top-[4.36rem] opacity-80">
             {formData.cvc || "000"}

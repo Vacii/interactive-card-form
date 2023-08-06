@@ -203,10 +203,10 @@ const Form: React.FC<FormProps> = ({ setFormData, formData }) => {
   };
 
   return (
-    <div className="mt-16 h-full">
+    <div className=" h-full">
       {isLoading && <Spinner />}
-      <form id="card-details" className="h-full">
-        <div className="flex flex-col justify-center w-full h-full px-5 gap-4">
+      <form id="card-details" className="h-full mt-6">
+        <div className="flex flex-col justify-center w-full h-full px-5 gap-5">
           <label className="uppercase flex flex-col tracking-widest text-sm">
             Cardholder name
             <input
@@ -296,8 +296,24 @@ const Form: React.FC<FormProps> = ({ setFormData, formData }) => {
           </button>
         </div>
       </form>
-      <div id="thanks-section" className="hidden">
-        <p>dik brasko</p>
+      <div id="thanks-section" className="hidden h-full">
+        <div className="flex flex-col h-full justify-center items-center text-center px-5 gap-8">
+          <img src="./src/assets/icon-complete.svg" alt="complete-icon" />
+          <div className="flex flex-col justify-center gap-3">
+            <h1 className="uppercase text-3xl tracking-wider ">Thank you!</h1>
+            <p className="text-[#8e8593]">We've added your card details</p>
+          </div>
+
+          <button
+            className="w-full bg-[#21092f] text-[#dedddf] mt-2 p-3 rounded-lg"
+            type="button"
+            onClick={() => {
+              window.location.reload();
+            }}
+          >
+            Continue
+          </button>
+        </div>
       </div>
     </div>
   );
