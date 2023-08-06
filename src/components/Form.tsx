@@ -1,3 +1,5 @@
+import React, { useRef } from "react";
+
 interface FormData {
   cardHolderName: string;
   cardNumber: string;
@@ -12,21 +14,56 @@ interface FormProps {
 }
 
 function Form({ setFormData, formData }: FormProps) {
-  const handleInput = (e: any) => {
+  const cardExpMMRef = useRef<HTMLInputElement>(null);
+  const cardExpYYRef = useRef<HTMLInputElement>(null);
+  const cardCVCref = useRef<HTMLInputElement>(null);
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    if (name === "card-number")
+    if (name === "cardHolderName") {
+      e.target.value = value.substring(0, 20);
+    }
+    if (name === "cardNumber") {
       e.target.value = value
         .replace(/\s/g, "")
+        .replace(/[^0-9]/g, "")
         .replace(/(.{4})/g, "$1 ")
         .trim()
         .slice(0, 19);
-    console.log(e.target.value);
+    }
+    if (name === "cardExpMM") {
+      e.target.value = value
+        .toString()
+        .replace(/[^0-9]/g, "")
+        .substring(0, 2);
+      if (e.target.value > "12") {
+        e.target.value = "12";
+      }
+      if (e.target.value.length >= 2) {
+        cardExpYYRef.current?.focus();
+      }
+    }
+    if (name === "cardExpYY") {
+      e.target.value = value
+        .toString()
+        .replace(/[^0-9]/g, "")
+        .substring(0, 2);
+      if (e.target.value.length <= 0) {
+        cardExpMMRef.current?.focus();
+      }
+      if (e.target.value.length >= 2) {
+        cardCVCref.current?.focus();
+      }
+    }
 
-    // if (name === 'number') e.target.value = value.replace(/\s/g, '').replace(/(.{4})/g, '$1 ').trim().slice(0, 19)
-    // if (name === 'mm' || name === 'yy') e.target.value = value.toString().replace(/[^0-9]/g, '').substring(0, 2)
-    // if (name === 'mm' && value > 12) e.target.value = '12'
-    // if (name === 'cvc') e.target.value = value.substring(0, 4)
-
+    if (name === "cvc") {
+      e.target.value = value
+        .toString()
+        .replace(/[^0-9]/g, "")
+        .substring(0, 3);
+      if (e.target.value.length <= 0) {
+        cardExpYYRef.current?.focus();
+      }
+    }
     setFormData({ ...formData, [name]: e.target.value });
   };
 
@@ -41,7 +78,7 @@ function Form({ setFormData, formData }: FormProps) {
                 type="text"
                 onChange={handleInput}
                 placeholder="e.g. Jane Appleseed"
-                name="carholder-name"
+                name="cardHolderName"
                 className="outline outline-1 outline-gray-400 opacity-50 p-2 mt-2 rounded-lg"
               />
             </label>
@@ -51,7 +88,7 @@ function Form({ setFormData, formData }: FormProps) {
                 type="text"
                 onChange={handleInput}
                 placeholder="e.g. 1234 5678 9123 000"
-                name="card-number"
+                name="cardNumber"
                 className="outline outline-1 outline-gray-400 opacity-50 p-2 mt-2 rounded-lg"
               ></input>
             </label>
@@ -64,14 +101,18 @@ function Form({ setFormData, formData }: FormProps) {
                 <div className="flex flex-row justify-center min-w-0 gap-2 mt-2">
                   <input
                     type="text"
+                    onChange={handleInput}
                     placeholder="MM"
-                    name="card-exp-mm"
+                    name="cardExpMM"
+                    ref={cardExpMMRef}
                     className="min-w-0 outline outline-1 outline-gray-400 opacity-50 p-2 rounded-lg"
                   />
                   <input
                     type="text"
+                    onChange={handleInput}
                     placeholder="YY"
-                    name="card-exp-yy"
+                    name="cardExpYY"
+                    ref={cardExpYYRef}
                     className="min-w-0 outline outline-1 outline-gray-400 opacity-50 p-2 rounded-lg"
                   />
                 </div>
@@ -82,8 +123,10 @@ function Form({ setFormData, formData }: FormProps) {
                 </label>
                 <input
                   type="text"
+                  onChange={handleInput}
                   placeholder="e.g. 123"
-                  name="card-exp-mm"
+                  name="cvc"
+                  ref={cardCVCref}
                   className="min-w-0 w-full outline outline-1 outline-gray-400 opacity-50 p-2 mt-2 rounded-lg"
                 />
               </div>
