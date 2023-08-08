@@ -203,9 +203,9 @@ const Form: React.FC<FormProps> = ({ setFormData, formData }) => {
   };
 
   return (
-    <div className=" h-full">
+    <div className="h-full w-full sm:flex sm:justify-center">
       {isLoading && <Spinner />}
-      <form id="card-details" className="h-full mt-6">
+      <form id="card-details" className="h-full mt-6 sm:m-0 sm:ml-10 sm:w-96">
         <div className="flex flex-col justify-center w-full h-full px-5 gap-5">
           <label className="uppercase flex flex-col tracking-widest text-sm">
             Cardholder name
